@@ -7,7 +7,18 @@ const withNextInputAutoFocusContextType = {
   handleSubmitEditing: PropTypes.func,
   getReturnKeyType: PropTypes.func
 };
-
+const getCircularReplacer = () => {
+    const seen = new WeakSet();
+    return (key, value) => {
+    if (typeof value === "object" && value !== null) {
+        if (seen.has(value)) {
+            return;
+        }
+        seen.add(value);
+    }
+    return value;
+    };
+};
 const getInputs = children =>
   React.Children.toArray(children).reduce((partialInputs, child) => {
     if (child && child.props && child.props.children) {
@@ -46,7 +57,7 @@ export const withNextInputAutoFocusForm = (
         const inputPosition = this.getInputPosition(name);
         const nextInputs = this.inputs.slice(inputPosition + 1);
         const nextFocusableInput = nextInputs.find(
-          element => console.log('hello there', JSON.stringify(element)) ||
+          element => console.log('hello there', JSON.stringify(element, getCircularReplacer())) ||
             this.inputRefs[element.props.name] &&
             this.inputRefs[element.props.name].focus
         );
