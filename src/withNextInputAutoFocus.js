@@ -46,7 +46,7 @@ export const withNextInputAutoFocusForm = (
         const inputPosition = this.getInputPosition(name);
         const nextInputs = this.inputs.slice(inputPosition + 1);
         const nextFocusableInput = nextInputs.find(
-          element => console.log('hello there', this.inputRefs[element.props.name]) ||
+          element => console.log('hello there', element.props) ||
             this.inputRefs[element.props.name] &&
             this.inputRefs[element.props.name].focus
         );
